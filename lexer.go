@@ -14,7 +14,6 @@ func NewLexer(text string) Lexer {
 
 func (l *Lexer) get_next_token() Token {
     for l.current_char != 0 {
-
         if unicode.IsSpace(l.current_char) {
             l.advance()
             continue
@@ -35,15 +34,15 @@ func (l *Lexer) get_next_token() Token {
         panic("Error")
     }
 
-    return Token{kind: EOF, value: "NONE"}
+    return Token{kind: EOF, value: "EOF"}
 }
 
 func (l *Lexer) advance() {
-    position := l.position + 1
-    if position > len(l.text) - 1 {
+    l.position++
+    if l.position > len(l.text) - 1 {
         l.current_char = 0
     } else {
-        l.current_char = rune(l.text[position])
+        l.current_char = rune(l.text[l.position])
     }
 }
 
