@@ -6,17 +6,20 @@ import (
     "os"
 )
 
-const INTEGER string = "INTEGER"
-const PLUS string = "PLUS"
-const MINUS string = "MINUS"
-const EOF string = "EOF"
-
-type Token struct {
-    kind  string
-    value string
+type Parser struct {
+    lexer Lexer
+    current_token Token
 }
 
-type Parser struct {
+func NewParser(l Lexer) Parser {
+    return Parser{lexer: l, current_token: l.get_next_token()}
+}
+
+func (p *Parser) expr() {
+    for p.current_token.value != "EOF" {
+        fmt.Println(p.current_token.kind)
+        p.current_token = p.lexer.get_next_token()
+    }
 }
 
 type Interpreter struct {
@@ -30,10 +33,8 @@ func main() {
         fmt.Print(">>> ")
         text, _ := reader.ReadString('\n')
 
-        l := NewLexer(text)
-        fmt.Println(l.get_next_token())
-        fmt.Println(l.get_next_token())
-        fmt.Println(l.get_next_token())
-        fmt.Println(l.get_next_token())
+        lexer := NewLexer(text)
+        parser := NewParser(lexer)
+        parser.expr()
     }
 }
