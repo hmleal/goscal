@@ -36,7 +36,19 @@ func (l *Lexer) get_next_token() Token {
             return token
         }
 
-        panic("Error")
+        if string(l.current_char) == "*" {
+            token := Token{kind: MUL, value: string(l.current_char)}
+            l.advance()
+            return token
+        }
+
+        if string(l.current_char) == "/" {
+            token := Token{kind: DIV, value: string(l.current_char)}
+            l.advance()
+            return token
+        }
+
+        panic("Invalid character")
     }
 
     return Token{kind: EOF, value: "EOF"}

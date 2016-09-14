@@ -6,6 +6,8 @@ const (
     INTEGER string = "INTEGER"
     PLUS string = "PLUS"
     MINUS string = "MINUS"
+    MUL string = "MUL"
+    DIV string = "DIV"
     EOF string = "EOF"
 )
 
