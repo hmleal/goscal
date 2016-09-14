@@ -1,6 +1,7 @@
 package main
 
 import "unicode"
+import "strings"
 
 type Lexer struct {
     text         string
@@ -20,13 +21,17 @@ func (l *Lexer) get_next_token() Token {
         }
 
         if unicode.IsDigit(l.current_char) {
-            token := Token{kind: INTEGER, value: string(l.current_char)}
-            l.advance()
-            return token
+            return Token{kind: INTEGER, value: l.integer()}
         }
 
         if string(l.current_char) == "+" {
             token := Token{kind: PLUS, value: string(l.current_char)}
+            l.advance()
+            return token
+        }
+
+        if string(l.current_char) == "-" {
+            token := Token{kind: MINUS, value: string(l.current_char)}
             l.advance()
             return token
         }
@@ -46,10 +51,11 @@ func (l *Lexer) advance() {
     }
 }
 
-func (l *Lexer) skype_whitespace() {
-    for l.current_char != 0 {
-        if unicode.IsSpace(l.current_char) {
+func (l *Lexer) integer() string {
+    result := []string{}
+    for unicode.IsDigit(l.current_char) {
+            result = append(result, string(l.current_char))
             l.advance()
-        }
     }
+    return strings.Join(result, "")
 }
