@@ -8,6 +8,8 @@ const (
     MINUS string = "MINUS"
     MUL string = "MUL"
     DIV string = "DIV"
+    LPAREN string = "("
+    RPAREN string = ")"
     EOF string = "EOF"
 )
 

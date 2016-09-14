@@ -12,7 +12,7 @@ func NewParser(l Lexer) Parser {
 func (p *Parser) expr() int {
     // expr  : term ((PLUS | MINUS) term)*
     // term  : factor ((MUL | DIV) factor)*
-    // factor: INTEGER
+    // factor: INTEGER | (LPAREN expr RPAREN)
     result := p.term()
 
     for p.current_token.kind == PLUS || p.current_token.kind == MINUS {
@@ -30,10 +30,19 @@ func (p *Parser) expr() int {
 }
 
 func (p *Parser) factor() int {
-    // factor: INTEGER
+    // factor: INTEGER | (LPAREN expr RPAREN)
     token := p.current_token
-    p.consume(INTEGER)
-    return token.toInteger()
+    result := 0
+    if token.kind == INTEGER {
+        p.consume(INTEGER)
+        return token.toInteger()
+    } else if token.kind == LPAREN {
+        p.consume(LPAREN)
+        result := p.expr()
+        p.consume(RPAREN)
+        return result
+    }
+    return result
 }
 
 func (p *Parser) term() int {

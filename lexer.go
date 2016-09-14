@@ -48,6 +48,18 @@ func (l *Lexer) get_next_token() Token {
             return token
         }
 
+        if string(l.current_char) == "(" {
+            token := Token{kind: LPAREN, value: string(l.current_char)}
+            l.advance()
+            return token
+        }
+
+        if string(l.current_char) == ")" {
+            token := Token{kind: RPAREN, value: string(l.current_char)}
+            l.advance()
+            return token
+        }
+
         panic("Invalid character")
     }
 
