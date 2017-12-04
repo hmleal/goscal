@@ -1,24 +1,21 @@
 package main
 
 import (
-    "fmt"
-    "bufio"
-    "os"
+	"bufio"
+	"fmt"
+	"os"
 )
 
-type Interpreter struct {
-}
-
 func main() {
-    fmt.Println("Welcome a implementation of Pascal in GoLang")
+	fmt.Println("Welcome a implementation of Pascal in GoLang")
 
-    for {
-        reader := bufio.NewReader(os.Stdin)
-        fmt.Print(">>> ")
-        text, _ := reader.ReadString('\n')
+	for {
+		reader := bufio.NewReader(os.Stdin)
+		fmt.Print(">>> ")
+		text, _ := reader.ReadString('\n')
 
-        lexer := NewLexer(text)
-        parser := NewParser(lexer)
-        fmt.Println(parser.expr())
-    }
+		lexer := NewLexer(text)
+		parser := NewParser(lexer)
+		fmt.Println(parser.expr())
+	}
 }
