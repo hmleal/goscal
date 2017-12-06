@@ -1,5 +1,6 @@
 package main
 
+// Parser a simple structore to represent a parser
 type Parser struct {
 	lexer        Lexer
 	currentToken Token
@@ -64,8 +65,8 @@ func (p *Parser) term() int {
 	return result
 }
 
-func (p *Parser) consume(token_type string) {
-	if p.currentToken.kind == token_type {
+func (p *Parser) consume(tokenType string) {
+	if p.currentToken.kind == tokenType {
 		p.currentToken = p.lexer.getNextToken()
 	} else {
 		panic("Invalid syntax")
