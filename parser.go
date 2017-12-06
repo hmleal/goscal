@@ -1,13 +1,13 @@
 package main
 
 type Parser struct {
-	lexer         Lexer
-	current_token Token
+	lexer        Lexer
+	currentToken Token
 }
 
 // NewParser creates a parser
 func NewParser(l Lexer) Parser {
-	return Parser{lexer: l, current_token: l.get_next_token()}
+	return Parser{lexer: l, currentToken: l.getNextToken()}
 }
 
 func (p *Parser) expr() int {
@@ -16,8 +16,8 @@ func (p *Parser) expr() int {
 	// factor: INTEGER | (LPAREN expr RPAREN)
 	result := p.term()
 
-	for p.current_token.kind == PLUS || p.current_token.kind == MINUS {
-		token := p.current_token
+	for p.currentToken.kind == PLUS || p.currentToken.kind == MINUS {
+		token := p.currentToken
 		if token.kind == PLUS {
 			p.consume(PLUS)
 			result = result + p.term()
@@ -32,7 +32,7 @@ func (p *Parser) expr() int {
 
 func (p *Parser) factor() int {
 	// factor: INTEGER | (LPAREN expr RPAREN)
-	token := p.current_token
+	token := p.currentToken
 	result := 0
 	if token.kind == INTEGER {
 		p.consume(INTEGER)
@@ -50,8 +50,8 @@ func (p *Parser) term() int {
 	// term : factor ((MUL | DIV) factor)*
 	result := p.factor()
 
-	for p.current_token.kind == MUL || p.current_token.kind == DIV {
-		token := p.current_token
+	for p.currentToken.kind == MUL || p.currentToken.kind == DIV {
+		token := p.currentToken
 		if token.kind == MUL {
 			p.consume(MUL)
 			result = result * p.factor()
@@ -65,8 +65,8 @@ func (p *Parser) term() int {
 }
 
 func (p *Parser) consume(token_type string) {
-	if p.current_token.kind == token_type {
-		p.current_token = p.lexer.get_next_token()
+	if p.currentToken.kind == token_type {
+		p.currentToken = p.lexer.getNextToken()
 	} else {
 		panic("Invalid syntax")
 	}
