@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Welcome a implementation of Pascal in GoLang")
+	fmt.Println("Welcome a implementation of Pascal in GoLang v2")
 
 	for {
 		reader := bufio.NewReader(os.Stdin)
@@ -16,6 +16,8 @@ func main() {
 
 		lexer := NewLexer(text)
 		parser := NewParser(lexer)
-		fmt.Println(parser.expr())
+		interpreter := Interpreter{parser}
+
+		fmt.Println(interpreter.Interpret())
 	}
 }

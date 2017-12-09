@@ -14,55 +14,50 @@ func NewParser(l Lexer) Parser {
 // expr  : term   ((PLUS | MINUS) term)*
 // term  : factor ((MUL | DIV) factor)*
 // factor: INTEGER | (LPAREN expr RPAREN)
-func (p *Parser) expr() int {
+func (p *Parser) expr() Node {
 	result := p.term()
 
 	for p.currentToken.kind == PLUS || p.currentToken.kind == MINUS {
 		token := p.currentToken
 		if token.kind == PLUS {
 			p.consume(PLUS)
-			result = result + p.term()
 		}
 		if token.kind == MINUS {
 			p.consume(MINUS)
-			result = result - p.term()
 		}
+		result = binOP{left: result, token: token, right: p.term()}
 	}
 	return result
 }
 
-// term : factor ((MUL | DIV) factor)*
-func (p *Parser) term() int {
+func (p *Parser) term() Node {
 	result := p.factor()
 
 	for p.currentToken.kind == MUL || p.currentToken.kind == DIV {
 		token := p.currentToken
 		if token.kind == MUL {
 			p.consume(MUL)
-			result = result * p.factor()
 		}
 		if token.kind == DIV {
 			p.consume(DIV)
-			result = result / p.factor()
 		}
+		result = binOP{left: result, token: token, right: p.factor()}
 	}
 	return result
 }
 
-// factor: INTEGER | (LPAREN expr RPAREN)
-func (p *Parser) factor() int {
+func (p *Parser) factor() Node {
 	token := p.currentToken
-	result := 0
 	if token.kind == INTEGER {
 		p.consume(INTEGER)
-		return token.toInteger()
+		return num{token}
 	} else if token.kind == LPAREN {
 		p.consume(LPAREN)
 		result := p.expr()
 		p.consume(RPAREN)
 		return result
 	}
-	return result
+	return num{Token{}}
 }
 
 func (p *Parser) consume(token_type string) {
@@ -71,4 +66,19 @@ func (p *Parser) consume(token_type string) {
 	} else {
 		panic("Invalid syntax")
 	}
+}
+
+type Interpreter struct {
+	parser Parser
+}
+
+// NewInterpreter creates a simple Interpreter struct
+func (i *Interpreter) NewInterpreter(p Parser) Interpreter {
+	return Interpreter{parser: p}
+}
+
+// Interpret parse a expression
+func (i *Interpreter) Interpret() int {
+	root := i.parser.expr()
+	return root.visit(root)
 }
