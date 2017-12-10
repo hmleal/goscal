@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strconv"
 )
 
@@ -50,7 +49,6 @@ func (n num) getName() string {
 }
 
 func (n num) visit(node Node) int {
-	fmt.Println(node.getName())
 	return n.token.toInteger()
 }
 
