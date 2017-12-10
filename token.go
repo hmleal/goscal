@@ -64,19 +64,18 @@ func (b binOP) getName() string {
 }
 
 func (b binOP) visit(node Node) int {
-	if b.token.kind == PLUS {
+	switch b.token.kind {
+	case PLUS:
 		return b.left.visit(b.left) + b.right.visit(b.right)
-	}
-	if b.token.kind == MINUS {
+	case MINUS:
 		return b.left.visit(b.left) - b.right.visit(b.right)
-	}
-	if b.token.kind == MUL {
+	case MUL:
 		return b.left.visit(b.left) * b.right.visit(b.right)
-	}
-	if b.token.kind == DIV {
+	case DIV:
 		return b.left.visit(b.left) / b.right.visit(b.right)
+	default:
+		return 0
 	}
-	return 0
 }
 
 type unaryOP struct {
