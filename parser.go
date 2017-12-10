@@ -13,7 +13,7 @@ func NewParser(l Lexer) Parser {
 // expr Check the expression
 // expr  : term   ((PLUS | MINUS) term)*
 // term  : factor ((MUL | DIV) factor)*
-// factor: INTEGER | (LPAREN expr RPAREN)
+// factor: (PLUS | MINUS) factor | INTEGER | (LPAREN expr RPAREN)
 func (p *Parser) expr() Node {
 	result := p.term()
 
@@ -47,11 +47,22 @@ func (p *Parser) term() Node {
 }
 
 func (p *Parser) factor() Node {
+	// (PLUS | MINUS) factor | INTEGER | (LPAREN expr RPAREN)
 	token := p.currentToken
+
+	if token.kind == PLUS {
+		p.consume(PLUS)
+		return unaryOP{token: token, expr: p.expr()}
+	}
+	if token.kind == MINUS {
+		p.consume(MINUS)
+		return unaryOP{token: token, expr: p.expr()}
+	}
 	if token.kind == INTEGER {
 		p.consume(INTEGER)
 		return num{token}
-	} else if token.kind == LPAREN {
+	}
+	if token.kind == LPAREN {
 		p.consume(LPAREN)
 		result := p.expr()
 		p.consume(RPAREN)

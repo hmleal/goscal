@@ -80,3 +80,23 @@ func (b binOP) visit(node Node) int {
 	}
 	return 0
 }
+
+type unaryOP struct {
+	token Token
+	expr  Node
+}
+
+func (u unaryOP) getName() string {
+	return "unaryOP"
+}
+
+func (u unaryOP) visit(node Node) int {
+	token := u.token.kind
+	if token == PLUS {
+		return +u.expr.visit(u.expr)
+	}
+	if token == MINUS {
+		return -u.expr.visit(u.expr)
+	}
+	return 0
+}
