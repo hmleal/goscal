@@ -60,8 +60,8 @@ func (p *Parser) factor() Node {
 	return num{Token{}}
 }
 
-func (p *Parser) consume(token_type string) {
-	if p.currentToken.kind == token_type {
+func (p *Parser) consume(tokenType string) {
+	if p.currentToken.kind == tokenType {
 		p.currentToken = p.lexer.getNextToken()
 	} else {
 		panic("Invalid syntax")
