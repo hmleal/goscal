@@ -27,40 +27,45 @@ func (l *Lexer) getNextToken() Token {
 			return NewToken(INTEGER, l.integer())
 		}
 
-		if string(l.currentChar) == "+" {
-			token := NewToken(PLUS, string(l.currentChar))
+		if string(l.currentChar) == ":" && string(l.peek()) == "=" {
 			l.advance()
-			return token
+			l.advance()
+			return NewToken(ASSIGN, ":=")
+		}
+
+		if string(l.currentChar) == ";" {
+			l.advance()
+			return NewToken(SEMI, ";")
+		}
+
+		if string(l.currentChar) == "+" {
+			l.advance()
+			return NewToken(PLUS, "+")
 		}
 
 		if string(l.currentChar) == "-" {
-			token := NewToken(MINUS, string(l.currentChar))
 			l.advance()
-			return token
+			return NewToken(MINUS, "-")
 		}
 
 		if string(l.currentChar) == "*" {
-			token := NewToken(MUL, string(l.currentChar))
 			l.advance()
-			return token
+			return NewToken(MUL, "*")
 		}
 
 		if string(l.currentChar) == "/" {
-			token := NewToken(DIV, string(l.currentChar))
 			l.advance()
-			return token
+			return NewToken(DIV, "/")
 		}
 
 		if string(l.currentChar) == "(" {
-			token := NewToken(LPAREN, string(l.currentChar))
 			l.advance()
-			return token
+			return NewToken(LPAREN, "(")
 		}
 
 		if string(l.currentChar) == ")" {
-			token := NewToken(RPAREN, string(l.currentChar))
 			l.advance()
-			return token
+			return NewToken(RPAREN, ")")
 		}
 
 		panic("Invalid character")
@@ -76,6 +81,14 @@ func (l *Lexer) advance() {
 	} else {
 		l.currentChar = rune(l.text[l.position])
 	}
+}
+
+func (l *Lexer) peek() rune {
+	peekPosition := l.position + 1
+	if peekPosition > len(l.text)-1 {
+		return 0
+	}
+	return rune(l.text[peekPosition])
 }
 
 func (l *Lexer) integer() string {

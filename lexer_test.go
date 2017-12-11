@@ -17,6 +17,8 @@ var tests = []testpair{
 	{"/", Token{kind: DIV, value: "/"}},
 	{"(", Token{kind: LPAREN, value: "("}},
 	{")", Token{kind: RPAREN, value: ")"}},
+	{":=", Token{kind: ASSIGN, value: ":="}},
+	{";", Token{kind: SEMI, value: ";"}},
 }
 
 func TestGetNextToken(t *testing.T) {

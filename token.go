@@ -12,6 +12,8 @@ const (
 	DIV     string = "DIV"
 	LPAREN  string = "("
 	RPAREN  string = ")"
+	ASSIGN  string = ":="
+	SEMI    string = ";"
 	EOF     string = "EOF"
 )
 
